@@ -45,6 +45,7 @@ public class HttpRequest implements HttpServletRequest {
     private InputStream input;
     private String method;
     private String protocol;
+    //请求参数字符串
     private String queryString;
     private String requestURI;
     private String serverName;

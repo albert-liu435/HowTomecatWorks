@@ -76,7 +76,7 @@ import java.security.cert.CertificateException;
 import org.apache.catalina.net.ServerSocketFactory;
 
 
-/**
+/**ServerSocketFactory的默认实现类
  * Default server socket factory, which returns unadorned server sockts.
  *
  * @author db@eng.sun.com

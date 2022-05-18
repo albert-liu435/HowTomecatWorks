@@ -18,6 +18,8 @@ public class HttpConnector implements Runnable {
     }
 
     public void run() {
+
+        //创建一个服务器套接字，并等待传入的http请求
         ServerSocket serverSocket = null;
         int port = 8080;
         try {
@@ -30,10 +32,13 @@ public class HttpConnector implements Runnable {
             // Accept the next incoming connection from the server socket
             Socket socket = null;
             try {
+                //等待http请求
                 socket = serverSocket.accept();
             } catch (Exception e) {
                 continue;
             }
+
+            //为每个请求创建一个HttpProcessor
             // Hand this socket off to an HttpProcessor
             HttpProcessor processor = new HttpProcessor(this);
             processor.process(socket);

@@ -66,6 +66,7 @@ package org.apache.catalina;
 
 
 /**
+ * 生命周期管理接口
  * Common interface for component life cycle methods.  Catalina components
  * may, but are not required to, implement this interface (as well as the
  * appropriate interface(s) for the functionality they support) in order to
@@ -129,7 +130,7 @@ public interface Lifecycle {
 
 
     /**
-     * Get the lifecycle listeners associated with this lifecycle. If this 
+     * Get the lifecycle listeners associated with this lifecycle. If this
      * Lifecycle has no listeners registered, a zero-length array is returned.
      */
     public LifecycleListener[] findLifecycleListeners();
@@ -143,14 +144,14 @@ public interface Lifecycle {
     public void removeLifecycleListener(LifecycleListener listener);
 
 
-    /**
+    /**开始方法，在生命周期中每个组件只调用一次
      * Prepare for the beginning of active use of the public methods of this
      * component.  This method should be called before any of the public
      * methods of this component are utilized.  It should also send a
      * LifecycleEvent of type START_EVENT to any registered listeners.
      *
-     * @exception LifecycleException if this component detects a fatal error
-     *  that prevents this component from being used
+     * @throws LifecycleException if this component detects a fatal error
+     *                            that prevents this component from being used
      */
     public void start() throws LifecycleException;
 
@@ -161,8 +162,8 @@ public interface Lifecycle {
      * instance of this component.  It should also send a LifecycleEvent
      * of type STOP_EVENT to any registered listeners.
      *
-     * @exception LifecycleException if this component detects a fatal error
-     *  that needs to be reported
+     * @throws LifecycleException if this component detects a fatal error
+     *                            that needs to be reported
      */
     public void stop() throws LifecycleException;
 

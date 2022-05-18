@@ -14,6 +14,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.UnrecoverableKeyException;
 import java.security.KeyManagementException;
+
 import org.apache.catalina.Connector;
 import org.apache.catalina.Container;
 import org.apache.catalina.Lifecycle;
@@ -30,6 +31,7 @@ import org.apache.catalina.util.StringManager;
 
 
 /**
+ * http默认的连接器
  * Implementation of an HTTP/1.1 connector.
  *
  * @author Craig R. McClanahan
@@ -40,7 +42,7 @@ import org.apache.catalina.util.StringManager;
 
 
 public final class HttpConnector
-    implements Connector, Lifecycle, Runnable {
+        implements Connector, Lifecycle, Runnable {
 
 
     // ----------------------------------------------------- Instance Variables
@@ -111,7 +113,7 @@ public final class HttpConnector
      * Descriptive information about this Connector implementation.
      */
     private static final String info =
-        "org.apache.catalina.connector.http.HttpConnector/1.0";
+            "org.apache.catalina.connector.http.HttpConnector/1.0";
 
 
     /**
@@ -200,10 +202,11 @@ public final class HttpConnector
      * The string manager for this package.
      */
     private StringManager sm =
-        StringManager.getManager(Constants.Package);
+            StringManager.getManager(Constants.Package);
 
 
     /**
+     * 连接器是否已经初始化
      * Has this component been initialized yet?
      */
     private boolean initialized = false;
@@ -834,7 +837,7 @@ public final class HttpConnector
     /**
      * Log a message on the Logger associated with our Container (if any).
      *
-     * @param message Message to be logged
+     * @param message   Message to be logged
      * @param throwable Associated exception
      */
     private void log(String message, Throwable throwable) {
@@ -877,27 +880,28 @@ public final class HttpConnector
 
 
     /**
+     * 打开并返回ServerSocket
      * Open and return the server socket for this Connector.  If an IP
      * address has been specified, the socket will be opened only on that
      * address; otherwise it will be opened on all addresses.
      *
-     * @exception IOException                input/output or network error
-     * @exception KeyStoreException          error instantiating the
-     *                                       KeyStore from file (SSL only)
-     * @exception NoSuchAlgorithmException   KeyStore algorithm unsupported
-     *                                       by current provider (SSL only)
-     * @exception CertificateException       general certificate error (SSL only)
-     * @exception UnrecoverableKeyException  internal KeyStore problem with
-     *                                       the certificate (SSL only)
-     * @exception KeyManagementException     problem in the key management
-     *                                       layer (SSL only)
+     * @throws IOException               input/output or network error
+     * @throws KeyStoreException         error instantiating the
+     *                                   KeyStore from file (SSL only)
+     * @throws NoSuchAlgorithmException  KeyStore algorithm unsupported
+     *                                   by current provider (SSL only)
+     * @throws CertificateException      general certificate error (SSL only)
+     * @throws UnrecoverableKeyException internal KeyStore problem with
+     *                                   the certificate (SSL only)
+     * @throws KeyManagementException    problem in the key management
+     *                                   layer (SSL only)
      */
     private ServerSocket open()
-    throws IOException, KeyStoreException, NoSuchAlgorithmException,
-           CertificateException, UnrecoverableKeyException,
-           KeyManagementException
-    {
+            throws IOException, KeyStoreException, NoSuchAlgorithmException,
+            CertificateException, UnrecoverableKeyException,
+            KeyManagementException {
 
+        //获取ServerSocketFactory工厂
         // Acquire the server socket factory for this Connector
         ServerSocketFactory factory = getFactory();
 
@@ -919,7 +923,7 @@ public final class HttpConnector
                 return (factory.createSocket(port, acceptCount, is));
             } catch (BindException be) {
                 throw new BindException(be.getMessage() + ":" + address +
-                                        ":" + port);
+                        ":" + port);
             }
         } catch (Exception e) {
             log(sm.getString("httpConnector.noAddress", address));
@@ -1099,19 +1103,21 @@ public final class HttpConnector
 
 
     /**
+     * 连接器的初始化操作
      * Initialize this connector (create ServerSocket here!)
      */
     public void initialize()
-    throws LifecycleException {
+            throws LifecycleException {
         if (initialized)
-            throw new LifecycleException (
-                sm.getString("httpConnector.alreadyInitialized"));
+            throw new LifecycleException(
+                    sm.getString("httpConnector.alreadyInitialized"));
 
-        this.initialized=true;
+        this.initialized = true;
         Exception eRethrow = null;
 
         // Establish a server socket on the specified port
         try {
+            //返回一个ServerSocket实例
             serverSocket = open();
         } catch (IOException ioe) {
             log("httpConnector, io problem: ", ioe);
@@ -1133,23 +1139,24 @@ public final class HttpConnector
             eRethrow = kme;
         }
 
-        if ( eRethrow != null )
+        if (eRethrow != null)
             throw new LifecycleException(threadName + ".open", eRethrow);
 
     }
 
 
     /**
+     * 开始处理请求
      * Begin processing requests via this Connector.
      *
-     * @exception LifecycleException if a fatal startup error occurs
+     * @throws LifecycleException if a fatal startup error occurs
      */
     public void start() throws LifecycleException {
 
         // Validate and update our current state
         if (started)
             throw new LifecycleException
-                (sm.getString("httpConnector.alreadyStarted"));
+                    (sm.getString("httpConnector.alreadyStarted"));
         threadName = "HttpConnector[" + port + "]";
         lifecycle.fireLifecycleEvent(START_EVENT, null);
         started = true;
@@ -1157,6 +1164,7 @@ public final class HttpConnector
         // Start our background thread
         threadStart();
 
+        //根据参数创建相应的处理器，默认是5个
         // Create the specified minimum number of processors
         while (curProcessors < minProcessors) {
             if ((maxProcessors > 0) && (curProcessors >= maxProcessors))
@@ -1171,14 +1179,14 @@ public final class HttpConnector
     /**
      * Terminate processing requests via this Connector.
      *
-     * @exception LifecycleException if a fatal shutdown error occurs
+     * @throws LifecycleException if a fatal shutdown error occurs
      */
     public void stop() throws LifecycleException {
 
         // Validate and update our current state
         if (!started)
             throw new LifecycleException
-                (sm.getString("httpConnector.notStarted"));
+                    (sm.getString("httpConnector.notStarted"));
         lifecycle.fireLifecycleEvent(STOP_EVENT, null);
         started = false;
 

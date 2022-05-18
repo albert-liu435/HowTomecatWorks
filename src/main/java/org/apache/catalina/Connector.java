@@ -3,6 +3,7 @@ package org.apache.catalina;
 import org.apache.catalina.net.ServerSocketFactory;
 
 /**
+ * 连接器接口
  * A <b>Connector</b> is a component responsible receiving requests from,
  * and returning responses to, a client application.  A Connector performs
  * the following general logic:
@@ -68,6 +69,7 @@ public interface Connector {
 
 
     /**
+     * 将连接器和某个Servlet容器相关联
      * Set the Container used for processing requests received by this
      * Connector.
      *
@@ -176,6 +178,7 @@ public interface Connector {
 
 
     /**
+     * 为引入的HTTP创建request对象
      * Create (or allocate) and return a Request object suitable for
      * specifying the contents of a Request to the responsible Container.
      */
@@ -183,18 +186,20 @@ public interface Connector {
 
 
     /**
+     * 创建相应的response对象
      * Create (or allocate) and return a Response object suitable for
      * receiving the contents of a Response from the responsible Container.
      */
     public Response createResponse();
 
     /**
+     * 初始化方法，在组件的整个生命周期中只调用一次
      * Invoke a pre-startup initialization. This is used to allow connectors
      * to bind to restricted ports under Unix operating environments.
      *
-     * @exception LifecycleException If this server was already initialized.
+     * @throws LifecycleException If this server was already initialized.
      */
     public void initialize()
-    throws LifecycleException;
+            throws LifecycleException;
 
 }
