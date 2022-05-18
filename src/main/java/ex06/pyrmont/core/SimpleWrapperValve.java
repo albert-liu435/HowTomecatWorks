@@ -1,4 +1,4 @@
-package ex05.pyrmont.core;
+package ex06.pyrmont.core;
 
 import java.io.IOException;
 import javax.servlet.Servlet;
@@ -15,9 +15,6 @@ import org.apache.catalina.ValveContext;
 import org.apache.catalina.Contained;
 import org.apache.catalina.Container;
 
-/**
- * 是一个基础阀
- */
 
 public class SimpleWrapperValve implements Valve, Contained {
 

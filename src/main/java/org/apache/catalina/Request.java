@@ -74,6 +74,7 @@ import javax.servlet.ServletRequest;
 
 
 /**
+ * 请求接口
  * A <b>Request</b> is the Catalina-internal facade for a
  * <code>ServletRequest</code> that is to be processed, in order to
  * produce the corresponding <code>Response</code>.
@@ -216,7 +217,7 @@ public interface Request {
      * Create and return a ServletInputStream to read the content
      * associated with this Request.
      *
-     * @exception IOException if an input/output error occurs
+     * @throws IOException if an input/output error occurs
      */
     public ServletInputStream createInputStream() throws IOException;
 
@@ -225,7 +226,7 @@ public interface Request {
      * Perform whatever actions are required to flush and close the input
      * stream or reader, in a single operation.
      *
-     * @exception IOException if an input/output error occurs
+     * @throws IOException if an input/output error occurs
      */
     public void finishRequest() throws IOException;
 
@@ -284,7 +285,7 @@ public interface Request {
      * Bind an object to a specified name in the internal notes associated
      * with this request, replacing any existing binding for this name.
      *
-     * @param name Name to which the object should be bound
+     * @param name  Name to which the object should be bound
      * @param value Object to be bound to the specified name
      */
     public void setNote(String name, Object value);

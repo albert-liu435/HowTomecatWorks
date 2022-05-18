@@ -74,6 +74,7 @@ public final class HttpConnector
 
 
     /**
+     * 用于处理请求的容器
      * The Container used for processing requests received by this Connector.
      */
     protected Container container = null;
@@ -147,7 +148,7 @@ public final class HttpConnector
     private int port = 8080;
 
 
-    /**
+    /**栈，用于存放HttpProcessor
      * The set of processors that have been created but are not currently
      * being used to process a request.
      */
@@ -193,6 +194,7 @@ public final class HttpConnector
 
 
     /**
+     * 用于监听TCP连接的ServerSocket
      * The server socket through which we listen for incoming TCP connections.
      */
     private ServerSocket serverSocket = null;
@@ -421,6 +423,7 @@ public final class HttpConnector
 
 
     /**
+     * 设置容器用于处理接收到的请求
      * Set the Container used for processing requests received by this
      * Connector.
      *
@@ -733,6 +736,7 @@ public final class HttpConnector
 
 
     /**
+     * 创建一个请求对象
      * Create (or allocate) and return a Request object suitable for
      * specifying the contents of a Request to the responsible Container.
      */
@@ -748,6 +752,7 @@ public final class HttpConnector
 
 
     /**
+     * 创建一个响应对象
      * Create (or allocate) and return a Response object suitable for
      * receiving the contents of a Response from the responsible Container.
      */
@@ -766,6 +771,7 @@ public final class HttpConnector
 
 
     /**
+     * 将Processor放入到栈中进行复用
      * Recycle the specified Processor so that it can be used again.
      *
      * @param processor The processor to be recycled
@@ -782,7 +788,7 @@ public final class HttpConnector
     // -------------------------------------------------------- Private Methods
 
 
-    /**
+    /**返回可用的HttpProcessor
      * Create (or allocate) and return an available processor for use in
      * processing a specific HTTP request, if possible.  If the maximum
      * allowed processors have already been created and are in use, return
@@ -857,6 +863,7 @@ public final class HttpConnector
 
 
     /**
+     * 创建HttpProcessor用于处理Http请求并返回相应的响应
      * Create and return a new processor suitable for processing HTTP
      * requests and returning the corresponding responses.
      */
@@ -941,6 +948,7 @@ public final class HttpConnector
 
 
     /**
+     * 后台线程用于监听TCP/IP连接并进行处理
      * The background thread that listens for incoming TCP/IP connections and
      * hands them off to an appropriate processor.
      */
@@ -1033,6 +1041,7 @@ public final class HttpConnector
 
 
     /**
+     * 开启一个守护线程
      * Start the background processing thread.
      */
     private void threadStart() {
@@ -1108,6 +1117,7 @@ public final class HttpConnector
      */
     public void initialize()
             throws LifecycleException {
+        //已经初始化的情况下就直接抛出异常
         if (initialized)
             throw new LifecycleException(
                     sm.getString("httpConnector.alreadyInitialized"));
@@ -1146,13 +1156,14 @@ public final class HttpConnector
 
 
     /**
-     * 开始处理请求
+     * 通过Connector开始处理请求
      * Begin processing requests via this Connector.
      *
      * @throws LifecycleException if a fatal startup error occurs
      */
     public void start() throws LifecycleException {
 
+        //如果已经启动的话直接抛出异常
         // Validate and update our current state
         if (started)
             throw new LifecycleException

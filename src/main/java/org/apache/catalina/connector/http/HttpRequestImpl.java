@@ -6,11 +6,13 @@ import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import javax.servlet.ServletInputStream;
+
 import org.apache.catalina.connector.HttpRequestBase;
 import org.apache.catalina.util.Enumerator;
 
 
 /**
+ * HttpRequest的实现类
  * Implementation of <b>HttpRequest</b> specific to the HTTP connector.
  *
  * @author Craig R. McClanahan
@@ -20,7 +22,7 @@ import org.apache.catalina.util.Enumerator;
  */
 
 final class HttpRequestImpl
-    extends HttpRequestBase {
+        extends HttpRequestBase {
 
 
     // -------------------------------------------------------------- Constants
@@ -51,7 +53,7 @@ final class HttpRequestImpl
      * Descriptive information about this Request implementation.
      */
     protected static final String info =
-        "org.apache.catalina.connector.http.HttpRequestImpl/1.0";
+            "org.apache.catalina.connector.http.HttpRequestImpl/1.0";
 
 
     /**
@@ -140,7 +142,7 @@ final class HttpRequestImpl
      * instance of RequestStream associated with this request, but this can
      * be overridden if necessary.
      *
-     * @exception IOException if an input/output error occurs
+     * @throws IOException if an input/output error occurs
      */
     public ServletInputStream createInputStream() throws IOException {
 
@@ -158,7 +160,7 @@ final class HttpRequestImpl
         if (nextHeader == headerPool.length) {
             // Grow the pool
             HttpHeader[] newHeaderPool =
-                new HttpHeader[headerPool.length + POOL_SIZE_INCREMENT];
+                    new HttpHeader[headerPool.length + POOL_SIZE_INCREMENT];
             for (int i = 0; i < nextHeader; i++) {
                 newHeaderPool[i] = headerPool[i];
             }
@@ -181,7 +183,7 @@ final class HttpRequestImpl
     /**
      * Add a Header to the set of Headers associated with this Request.
      *
-     * @param name The new header name
+     * @param name  The new header name
      * @param value The new header value
      * @deprecated Don't use
      */
@@ -190,7 +192,7 @@ final class HttpRequestImpl
         if (nextHeader == headerPool.length) {
             // Grow the pool
             HttpHeader[] newHeaderPool =
-                new HttpHeader[headerPool.length + POOL_SIZE_INCREMENT];
+                    new HttpHeader[headerPool.length + POOL_SIZE_INCREMENT];
             for (int i = 0; i < nextHeader; i++) {
                 newHeaderPool[i] = headerPool[i];
             }
@@ -249,14 +251,14 @@ final class HttpRequestImpl
      * Perform whatever actions are required to flush and close the input
      * stream or reader, in a single operation.
      *
-     * @exception IOException if an input/output error occurs
+     * @throws IOException if an input/output error occurs
      */
     public void finishRequest() throws IOException {
 
         // If neither a reader or an is have been opened, do it to consume
         // request bytes, if any
         if ((reader == null) && (stream == null) && (getContentLength() != 0)
-            && (getProtocol() != null) && (getProtocol().equals("HTTP/1.1")))
+                && (getProtocol() != null) && (getProtocol().equals("HTTP/1.1")))
             getInputStream();
 
         super.finishRequest();
@@ -307,7 +309,7 @@ final class HttpRequestImpl
         for (int i = 0; i < nextHeader; i++) {
             if (headerPool[i].equals(name))
                 return new String(headerPool[i].value, 0,
-                                  headerPool[i].valueEnd);
+                        headerPool[i].valueEnd);
         }
         return null;
 
@@ -328,7 +330,7 @@ final class HttpRequestImpl
         for (int i = 0; i < nextHeader; i++) {
             if (headerPool[i].equals(name))
                 tempArrayList.add(new String(headerPool[i].value, 0,
-                                             headerPool[i].valueEnd));
+                        headerPool[i].valueEnd));
         }
         return (Enumeration) new Enumerator(tempArrayList);
 
@@ -342,7 +344,7 @@ final class HttpRequestImpl
         ArrayList tempArrayList = new ArrayList();
         for (int i = 0; i < nextHeader; i++) {
             tempArrayList.add(new String(headerPool[i].name, 0,
-                                         headerPool[i].nameEnd));
+                    headerPool[i].nameEnd));
         }
         return (Enumeration) new Enumerator(tempArrayList);
 

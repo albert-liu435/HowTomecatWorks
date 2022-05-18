@@ -1,16 +1,16 @@
-package ex05.pyrmont.startup;
+package ex06.pyrmont.startup;
 
-import ex05.pyrmont.core.SimpleContext;
-import ex05.pyrmont.core.SimpleContextMapper;
-import ex05.pyrmont.core.SimpleLoader;
-import ex05.pyrmont.core.SimpleWrapper;
-import ex05.pyrmont.valves.ClientIPLoggerValve;
-import ex05.pyrmont.valves.HeaderLoggerValve;
+import ex06.pyrmont.core.SimpleContext;
+import ex06.pyrmont.core.SimpleContextLifecycleListener;
+import ex06.pyrmont.core.SimpleContextMapper;
+import ex06.pyrmont.core.SimpleLoader;
+import ex06.pyrmont.core.SimpleWrapper;
+import org.apache.catalina.Connector;
 import org.apache.catalina.Context;
+import org.apache.catalina.Lifecycle;
+import org.apache.catalina.LifecycleListener;
 import org.apache.catalina.Loader;
 import org.apache.catalina.Mapper;
-import org.apache.catalina.Pipeline;
-import org.apache.catalina.Valve;
 import org.apache.catalina.Wrapper;
 import org.apache.catalina.connector.http.HttpConnector;
 
@@ -18,12 +18,11 @@ import org.apache.catalina.connector.http.HttpConnector;
  * localhost:8080/Modern
  * localhost:8080/Primitive
  */
-public final class Bootstrap2 {
+public final class Bootstrap {
     public static void main(String[] args) {
 
 
-        HttpConnector connector = new HttpConnector();
-
+        Connector connector = new HttpConnector();
         Wrapper wrapper1 = new SimpleWrapper();
         wrapper1.setName("Primitive");
         wrapper1.setServletClass("PrimitiveServlet");
@@ -31,19 +30,14 @@ public final class Bootstrap2 {
         wrapper2.setName("Modern");
         wrapper2.setServletClass("ModernServlet");
 
-
         Context context = new SimpleContext();
         context.addChild(wrapper1);
         context.addChild(wrapper2);
 
-        Valve valve1 = new HeaderLoggerValve();
-        Valve valve2 = new ClientIPLoggerValve();
-
-        ((Pipeline) context).addValve(valve1);
-        ((Pipeline) context).addValve(valve2);
-
         Mapper mapper = new SimpleContextMapper();
         mapper.setProtocol("http");
+        LifecycleListener listener = new SimpleContextLifecycleListener();
+        ((Lifecycle) context).addLifecycleListener(listener);
         context.addMapper(mapper);
         Loader loader = new SimpleLoader();
         context.setLoader(loader);
@@ -53,10 +47,12 @@ public final class Bootstrap2 {
         connector.setContainer(context);
         try {
             connector.initialize();
-            connector.start();
+            ((Lifecycle) connector).start();
+            ((Lifecycle) context).start();
 
             // make the application wait until we press a key.
             System.in.read();
+            ((Lifecycle) context).stop();
         } catch (Exception e) {
             e.printStackTrace();
         }

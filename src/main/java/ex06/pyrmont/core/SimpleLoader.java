@@ -1,4 +1,4 @@
-package ex05.pyrmont.core;
+package ex06.pyrmont.core;
 
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -8,21 +8,19 @@ import java.net.URLClassLoader;
 import java.net.URLStreamHandler;
 
 import org.apache.catalina.Container;
+import org.apache.catalina.Lifecycle;
+import org.apache.catalina.LifecycleException;
+import org.apache.catalina.LifecycleListener;
 import org.apache.catalina.Loader;
 import org.apache.catalina.DefaultContext;
 
-/**
- * 用于载入servlet
- */
-public class SimpleLoader implements Loader {
+public class SimpleLoader implements Loader, Lifecycle {
 
     public static final String WEB_ROOT =
             System.getProperty("user.dir") + File.separator + "webroot";
-
     ClassLoader classLoader = null;
     Container container = null;
 
-    //初始化类加载器
     public SimpleLoader() {
         try {
             URL[] urls = new URL[1];
@@ -34,7 +32,6 @@ public class SimpleLoader implements Loader {
         } catch (IOException e) {
             System.out.println(e.toString());
         }
-
 
     }
 
@@ -90,6 +87,24 @@ public class SimpleLoader implements Loader {
     }
 
     public void removePropertyChangeListener(PropertyChangeListener listener) {
+    }
+
+    // implementation of the Lifecycle interface's methods
+    public void addLifecycleListener(LifecycleListener listener) {
+    }
+
+    public LifecycleListener[] findLifecycleListeners() {
+        return null;
+    }
+
+    public void removeLifecycleListener(LifecycleListener listener) {
+    }
+
+    public synchronized void start() throws LifecycleException {
+        System.out.println("Starting SimpleLoader");
+    }
+
+    public void stop() throws LifecycleException {
     }
 
 }

@@ -65,6 +65,7 @@
 package org.apache.catalina;
 
 /**
+ * 表示整个Catalina servlet引擎
  * An <b>Engine</b> is a Container that represents the entire Catalina servlet
  * engine.  It is useful in the following types of scenarios:
  * <ul>
@@ -120,7 +121,7 @@ public interface Engine extends Container {
      * Set the JvmRouteId for this engine.
      *
      * @param jvmRouteId the (new) JVM Route ID. Each Engine within a cluster
-     *        must have a unique JVM Route ID.
+     *                   must have a unique JVM Route ID.
      */
     public void setJvmRoute(String jvmRouteId);
 

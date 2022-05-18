@@ -31,6 +31,7 @@ import org.apache.catalina.util.StringParser;
 
 
 /**
+ * 用于处理http请求和响应
  * Implementation of a request processor (and its associated thread) that may
  * be used by an HttpConnector to process individual requests.  The connector
  * will allocate a processor from its pool, assign a particular socket to it,
@@ -479,6 +480,7 @@ final class HttpProcessor
 
 
     /**
+     * 解析连接，即获取请求所使用的协议
      * Parse and record the connection parameters related to this request.
      *
      * @param socket The socket on which we are connected
@@ -865,7 +867,8 @@ final class HttpProcessor
     }
 
 
-    /**用于解析连接  解析请求，解析请求头
+    /**
+     * 用于解析连接  解析请求，解析请求头
      * Process an incoming HTTP request on the Socket that has been assigned
      * to this Processor.  Any exceptions that occur during processing must be
      * swallowed and dealt with.
@@ -873,7 +876,9 @@ final class HttpProcessor
      * @param socket The socket on which we are connected to the client
      */
     private void process(Socket socket) {
+        //用于表示在处理过程找那个是否有错误发生
         boolean ok = true;
+        //是否应该调用Respones接口的finishResponse()方法
         boolean finishResponse = true;
         SocketInputStream input = null;
         OutputStream output = null;
@@ -886,11 +891,13 @@ final class HttpProcessor
             log("process.create", e);
             ok = false;
         }
-
+        //表明是否是持久连接
         keepAlive = true;
 
+        //不断地读取输入流
         while (!stopped && ok && keepAlive) {
 
+            //设置为true
             finishResponse = true;
 
             try {
@@ -1181,6 +1188,7 @@ final class HttpProcessor
 
 
     /**
+     * 启动一个后台线程
      * Start the background thread we will use for request processing.
      *
      * @throws LifecycleException if a fatal startup error occurs
