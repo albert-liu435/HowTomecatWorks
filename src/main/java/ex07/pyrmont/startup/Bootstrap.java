@@ -14,6 +14,7 @@ import org.apache.catalina.logger.FileLogger;
 import org.apache.catalina.Mapper;
 import org.apache.catalina.Wrapper;
 import org.apache.catalina.connector.http.HttpConnector;
+import org.apache.catalina.logger.SystemOutLogger;
 
 public final class Bootstrap {
     public static void main(String[] args) {
@@ -47,12 +48,14 @@ public final class Bootstrap {
         // ------ add logger --------
         System.setProperty("catalina.base", System.getProperty("user.dir"));
         System.out.println(System.getProperty("user.dir"));
-        FileLogger logger = new FileLogger();
-        logger.setPrefix("FileLog_");
-        logger.setSuffix(".txt");
-        logger.setTimestamp(true);
-        logger.setDirectory("webroot");
-        context.setLogger(logger);
+//        FileLogger logger = new FileLogger();
+//        logger.setPrefix("FileLog_");
+//        logger.setSuffix(".txt");
+//        logger.setTimestamp(true);
+//        logger.setDirectory("webroot");
+//        context.setLogger(logger);
+
+        context.setLogger(new SystemOutLogger());
 
         //---------------------------
 

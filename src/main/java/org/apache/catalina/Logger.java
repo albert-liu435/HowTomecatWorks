@@ -69,6 +69,7 @@ import java.beans.PropertyChangeListener;
 
 
 /**
+ * log接口提供一些log()方法来写日志，
  * A <b>Logger</b> is a generic interface for the message and exception
  * logging methods of the ServletContext interface.  Loggers can be
  * attached at any Container level, but will typically only be attached
@@ -158,7 +159,7 @@ public interface Logger {
      * servlet container.  This message will be logged unconditionally.
      *
      * @param message A <code>String</code> specifying the message to be
-     *  written to the log file
+     *                written to the log file
      */
     public void log(String message);
 
@@ -172,7 +173,7 @@ public interface Logger {
      * unconditionally.
      *
      * @param exception An <code>Exception</code> to be reported
-     * @param msg The associated message string
+     * @param msg       The associated message string
      */
     public void log(Exception exception, String msg);
 
@@ -183,8 +184,8 @@ public interface Logger {
      * and type of the servlet log file is specific to the servlet container,
      * usually an event log.  This message will be logged unconditionally.
      *
-     * @param message A <code>String</code> that describes the error or
-     *  exception
+     * @param message   A <code>String</code> that describes the error or
+     *                  exception
      * @param throwable The <code>Throwable</code> error or exception
      */
     public void log(String message, Throwable throwable);
@@ -195,8 +196,8 @@ public interface Logger {
      * log, if the logger is set to a verbosity level equal to or higher than
      * the specified value for this message.
      *
-     * @param message A <code>String</code> specifying the message to be
-     *  written to the log file
+     * @param message   A <code>String</code> specifying the message to be
+     *                  written to the log file
      * @param verbosity Verbosity level of this message
      */
     public void log(String message, int verbosity);
@@ -207,8 +208,8 @@ public interface Logger {
      * usually an event log, if the logger is set to a verbosity level equal
      * to or higher than the specified value for this message.
      *
-     * @param message A <code>String</code> that describes the error or
-     *  exception
+     * @param message   A <code>String</code> that describes the error or
+     *                  exception
      * @param throwable The <code>Throwable</code> error or exception
      * @param verbosity Verbosity level of this message
      */
